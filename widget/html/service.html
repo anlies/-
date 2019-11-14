@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <title>Hello APP</title>
+    <style>
+        #container {
+            display: flex;
+            flex-direction: column;
+            padding-left: 1rem;
+        }
+
+        .header {
+            padding-top: 2rem;
+        }
+
+        .title {
+            margin-top: 2rem;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        h4 {
+            margin-top: 1rem;
+            text-align: center;
+            width: 16rem;
+        }
+
+        .login {
+            margin-top: 2rem;
+            background-image: linear-gradient(to right, #34ABFF, #007EFF);
+            width: 13rem;
+            height: 2.5rem;
+            border-radius: 2rem;
+            text-align: center;
+            line-height: 2.5rem;
+            color: white;
+        }
+
+        .bottom {
+            margin: 3rem auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="header">
+            <div onclick="back()"><img src="../image/back.png" alt="" style="width:12px;height:auto"></div>
+        </div>
+        <div class="title">
+            <h1>警报服务号码</h1>
+        </div>
+        <div class="main">
+            <h1 id="service">010-110110990</h1>
+            <h4 style="color:red">请告知紧急联系人将本号码保存至通讯录防止错过警报或通话被拦截</h4>
+            <div class="login" onclick="save()">
+                保存至通讯录
+            </div>
+        </div>
+        <div class="bottom" onclick="next()">
+            <img src="../image/next.png" alt="" style="width:4rem;height:auto">
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    var DVContacts
+    var service
+    apiready = function() {
+        getHeight()
+        service = $api.html($api.byId('service'));
+        DVContacts = api.require('DVContacts');
+    }
+
+    function save() {
+      // console.log(service)
+      DVContacts.add({
+              firstName: '报警电话',
+              phones: [{
+                      '手机': service
+                  }]
+              },function(ret, err) {
+                  if (ret) {
+                      alert("保存成功");
+                  } else {
+                      alert("保存失败");
+                  }
+              })
+        // DVContacts.openContactsUI(function(ret, err) {
+        //     if (ret) {
+        //         alert(JSON.stringify(ret));
+        //     } else {
+        //         alert(JSON.stringify(err));
+        //     }
+        // });
+        // DVContacts.add({
+        //         firstName: '报警电话',
+        //         phones: [{
+        //                 '手机': service
+        //             }]
+        //         },function(ret, err) {
+        //             if (ret) {
+        //                 alert(JSON.stringify(ret));
+        //             } else {
+        //                 alert(JSON.stringify(err));
+        //             }
+        //         })
+    }
+
+    function next() {
+        api.openWin({
+            name: 'setFinish',
+            url: './setFinish.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+
+    }
+</script>

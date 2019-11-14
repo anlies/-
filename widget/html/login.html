@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        #container {
+            display: flex;
+            flex-direction: column;
+            padding-left: 2rem;
+            padding-top: 8rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        .userInfo {
+            margin-top: 3rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .phone,
+        .psw {
+            display: flex;
+            align-items: center;
+            padding-left: 1rem;
+            width: 13rem;
+            height: 2.5rem;
+            background-color: rgba(224, 224, 224, 1);
+            border-radius: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .text {
+            color: #696969;
+            font-size: 1rem;
+            width: 20%;
+            margin-right: 1rem;
+        }
+        /*.btn {
+            margin-top: 1.5rem;
+            background-image: linear-gradient(to right, #34ABFF, #007EFF);
+            width: 13rem;
+            height: 2.5rem;
+            border-radius: 2rem;
+            text-align: center;
+            line-height: 2.5rem;
+            color: white;
+        }*/
+
+        .icon {
+            width: 1rem;
+            height: auto;
+            margin-right: 1.8rem;
+        }
+
+        .register {
+            margin-top: 1rem;
+            margin-left: 9rem;
+            color: #ccc;
+        }
+
+        .login {
+            margin-top: 1rem;
+            background-image: linear-gradient(to right, #34ABFF, #007EFF);
+            width: 13rem;
+            height: 2.5rem;
+            border-radius: 2rem;
+            text-align: center;
+            line-height: 2.5rem;
+            color: white;
+        }
+        /*.bottom {
+            margin-top: 4rem;
+            margin-left: -2rem;
+        }
+
+        .aui-content-padded {
+            margin: 0rem;
+        }*/
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h1>欢迎使用Shero</h1>
+        <div class="userInfo">
+            <div class="phone">
+                <div class="text">+86</div>
+                <input type="tel" pattern="^1[345678][0-9]{9}$" placeholder="手机号" maxlength="11" id="mobile">
+            </div>
+            <div class="psw">
+                <div class="icon"><img src="../image/pwd.png" alt=""></div>
+                <input type="password" placeholder="密码" id='pwd'>
+            </div>
+            <div class="login" onclick="login()">
+                立即登录
+            </div>
+            <!-- <div class="btn" onclick="getVerificationCode()">获取验证码</div> -->
+        </div>
+        <div class="register" onclick="register()">用户注册</div>
+        <!-- <div class="bottom">
+            <section class="aui-content-padded login-third">
+                <p class="aui-font-size-12 aui-text-center aui-margin-b-15">其他登录方式</p>
+                <div class="aui-grid" style="background: none;">
+                    <div class="aui-row">
+                        <div class="aui-col-xs-4">
+                            <i class="aui-iconfont aui-icon-qq"></i>
+                        </div>
+                        <div class="aui-col-xs-4">
+                            <i class="aui-iconfont aui-icon-wechat"></i>
+                        </div>
+                        <div class="aui-col-xs-4">
+                            <i class="aui-iconfont aui-icon-weibo"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div> -->
+    </div>
+    <!-- <section class="aui-content aui-margin-t-15">
+        <ul class="aui-list aui-form-list">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label aui-border-r color-orange">
+                        手机号 <small class="aui-margin-l-5 aui-text-warning">+86</small>
+                    </div>
+                    <div class="aui-list-item-input aui-padded-l-10">
+                        <input type="number" pattern="[0-9]*" placeholder="输入手机号" id="mobile">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-input" style="width: auto;">
+                        <input type="number" pattern="^1[345678][0-9]{9}$" placeholder="输入短信验证码" id="code">
+                    </div>
+                    <div class="aui-list-item-label aui-margin-r-15" style="width: 6rem;">
+                        <div class="aui-btn aui-btn-info" style="width: 6rem;" onclick="getVerificationCode()" id="code">获取验证码</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <section class="aui-content-padded">
+        <div class="aui-btn aui-btn-block aui-btn-info aui-btn-sm" tapmode onclick="login()">登录</div>
+    </section>
+    <section class="aui-content-padded login-third">
+        <p class="aui-font-size-12 aui-text-center aui-margin-b-15">第三方账号登录</p>
+        <div class="aui-grid" style="background: none;">
+            <div class="aui-row">
+                <div class="aui-col-xs-4">
+                    <i class="aui-iconfont aui-icon-qq"></i>
+                </div>
+                <div class="aui-col-xs-4">
+                    <i class="aui-iconfont aui-icon-wechat"></i>
+                </div>
+                <div class="aui-col-xs-4">
+                    <i class="aui-iconfont aui-icon-weibo"></i>
+                </div>
+            </div>
+        </div>
+    </section> -->
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    // var moduleSMSSDK
+    // function getVerificationCode() {
+    //     var phone = $api.byId('mobile').value;
+    //     if (phone.length == 0) {
+    //         alert("请输入手机号");
+    //         return false;
+    //     } else if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(phone))) {
+    //         alert("手机号码有误，请重填");
+    //         return false;
+    //     } else {
+    //        $api.setStorage('phone', phone);
+    //         var param = {
+    //             zone: '86',
+    //             phoneNumber: phone.toString(),
+    //         };
+    //         moduleSMSSDK.getTextCode(param, function(ret, err) {
+    //
+    //             if (err !== null && err !== undefined && err !== '') {
+    //                 //  console.log(param.zone,param.phoneNumber)
+    //                 // 错误消息示例：{"msg":"Template not exist.","code":484}
+    //                 alert("Error:\n" + JSON.stringify(err));
+    //             } else {
+    //                 // 正常消息示例：{"smart":false}
+    //                 // alert("Success:\n" + JSON.stringify(ret));
+    //             }
+    //         });
+    //         setTimeout(function() {
+    //             api.openWin({
+    //                 name: 'code',
+    //                 url: './code.html',
+    //                 pageParam: {
+    //                     phone: phone
+    //                 }
+    //             });
+    //         }, 1000);
+    //     }
+    // }
+    function register() {
+        api.openWin({
+            name: 'userInfo',
+            url: './userInfo.html'
+        });
+    }
+
+    function login() {
+        var uname = $api.byId('mobile').value;
+        var sign = $api.byId('pwd').value;
+        if (uname.length == 0 || sign.length == 0) {
+            alert("手机号或密码不能为空");
+            return false;
+        } else if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(uname))) {
+            alert("手机号码有误，请重填");
+            return false;
+        } else {
+            var params = {
+                uname: uname,
+                sign: sign
+            }
+            api.ajax({
+                url: url+'/login/login.json',
+                method: 'post',
+                timeout: 30,
+                dataType: 'json',
+                returnAll: false,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    body: JSON.stringify(params)
+
+                }
+            }, function(ret, err) {
+                console.log(JSON.stringify(ret.data.userInfo.id))
+                if (ret.errCode == "0") {
+                 $api.setStorage('userId', ret.data.userInfo.id);
+                  $api.setStorage('realName', ret.data.userInfo.realName);
+                  $api.setStorage('mobile', ret.data.userInfo.mobile);
+                  $api.setStorage('username', ret.data.userInfo.username);
+                  $api.setStorage('contact', ret.data.userInfo.contact);
+                    alert("登录成功")
+                    api.openWin({
+                        name: 'home',
+                        url: './home.html',
+                        pageParam: {
+                            name: 'test'
+                        }
+                    });
+                } else {
+                    alert("用户名或密码错误")
+                }
+            })
+        }
+    }
+
+    apiready = function() {
+        getHeight()
+        moduleSMSSDK = api.require('smssdk');
+        console.log(url)
+    };
+    // function login(){
+    //   api.openWin({
+    //       name: 'home',
+    //       url: './home.html',
+    //       pageParam: {
+    //           name: 'test'
+    //       }
+    //   });
+    // }
+</script>
+
+</html>

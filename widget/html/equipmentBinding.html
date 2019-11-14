@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style media="screen">
+        #container {
+            display: flex;
+            flex-direction: column;
+            background-color: #DCDCDC;
+            align-items: center;
+        }
+
+        .bind {
+            color: #A9A9A9;
+            padding-top: 2rem;
+            margin-left: 13rem;
+        }
+
+        .header {
+            margin-top: 2rem;
+        }
+        .shero img {
+            margin-top: 2rem;
+            width: 14rem;
+            height: auto;
+        }
+
+        .bottom {
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="bind">
+            稍后绑定
+        </div>
+        <div class="header">
+            <h1>设备绑定</h1>
+        </div>
+        <div class="shero">
+            <img src="../image/airFan.png" alt="">
+        </div>
+        <div class="bottom" onclick="next()">
+            <img src="../image/next.png" alt="" style="width:4rem;height:auto">
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        getHeight()
+    }
+
+    function next() {
+        api.openWin({
+            name: 'scanCode',
+            url: './scanCode.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+
+    }
+</script>

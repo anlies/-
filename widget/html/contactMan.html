@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <title>Hello APP</title>
+    <style>
+        #container {
+            display: flex;
+            flex-direction: column;
+            padding-left: 1rem;
+        }
+
+        .header {
+            padding-top: 2rem;
+        }
+
+        .main {
+            margin-top: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            font-size: 0.7rem;
+            margin-top: 0.2rem;
+            color: #A9A9A9;
+        }
+
+        .userInfo {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 15.5rem;
+            height:4rem;
+            background-color: #EEEEEE;
+            border-radius: 1rem;
+        }
+        .icon {
+            width: 1rem;
+            height: auto;
+        }
+
+        .add {
+            justify-content: center;
+        }
+
+        .info {
+            display: flex;
+        }
+
+        .bottom {
+            margin: 3rem auto;
+        }
+        .contact{
+          display:none;
+          position: absolute;
+          left: 20%;
+          top:40%;
+          width:10rem;
+          height:8rem;
+          background-color: #fff;
+          border-radius: 0.5rem;
+          /*opacity: 0.5;*/
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="header">
+            <div onclick="back()"><img src="../image/back.png" alt="" style="width:12px;height:auto"></div>
+        </div>
+        <div class="main">
+            <div>
+                <h1>紧急联系人</h1>
+                <h3>当设备检测到危害情况后将按次序联系紧急联系人</h3>
+            </div>
+            <div class="userInfo" style="display:none;" id="userInfo">
+                <div class="icon"><img src="../image/delete.png" alt=""></div>
+                <h2 id="name"></h2>
+                <h2 id="phone"></h2>
+            </div>
+            <div class="userInfo add" onclick="addUser()">
+                <div class="icon"><img src="../image/add.png" alt=""> </div>
+                <div style="margin-left:0.5rem">
+                    <h2>紧急联系人</h2>
+                </div>
+            </div>
+        </div>
+        <div class="bottom" onclick="next()">
+            <img src="../image/next.png" alt="" style="width:4rem;height:auto">
+        </div>
+        <div class="contact">
+          <div class="userName" style="display:flex;align-items: center;">
+              <div class="icon" style="margin-left:1rem"><img src="../image/name.png" alt="">
+              </div>
+              <div class="input"><input type="text" id="userName" placeholder="姓名" style="font-size: 1rem;padding-left:1rem"></div>
+          </div>
+          <div class="userPhone" style="display:flex;align-items: center;">
+              <div class="icon" style="margin-left:1rem"><img src="../image/phone.png" alt=""></div>
+              <div class="input phone"><input type="tel" id="userPhone" placeholder="联系方式" style="font-size: 1rem;padding-left:1rem" maxlength="11"></div>
+          </div>
+          <div class="btn" style="margin-left:2.5rem;margin-top:1rem;">
+            <div class="aui-btn aui-btn-warning" onclick="submit()">提交</div>
+            <div class="aui-btn aui-btn-danger" onclick="cancel()" >取消</div>
+          </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+
+<script type="text/javascript">
+    apiready = function() {
+        getHeight()
+        // $api.html($api.byId('name'),$api.getStorage('userName'));
+        // $api.html($api.byId('phone'),$api.getStorage('userPhone'));
+    }
+
+    function next() {
+        api.openWin({
+            name: 'service',
+            url: './service.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+
+    }
+
+    //添加联系人
+    function addUser(){
+      $api.css($api.dom(".contact"), 'display:block');
+    }
+    function submit() {
+       var userName = $api.byId('userName').value
+       var userPhone = $api.byId('userPhone').value
+       $api.css($api.byId("userInfo"), 'display:block');
+       $api.css($api.byId("userInfo"), 'display:flex;justify-content:space-around;align-items:center');
+       $api.html($api.byId("name"), userName);
+       $api.html($api.byId("phone"),userPhone);
+       $api.css($api.dom(".contact"), 'display:none');
+    }
+    function cancel() {
+   $api.css($api.dom(".contact"), 'display:none');
+    }
+</script>

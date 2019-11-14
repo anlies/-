@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <title>Hello APP</title>
+    <style>
+        #container {
+            display: flex;
+            flex-direction: column;
+            padding-left: 2rem;
+        }
+
+        .header {
+            padding-top: 3rem;
+            display: flex;
+            justify-content: space-between;
+            ;
+        }
+
+        .help {
+            padding-right: 2rem;
+            color: #A9A9A9;
+        }
+
+        .main {
+            margin-top: 4rem;
+        }
+
+        .text {
+            padding-left: 1rem;
+        }
+
+        h3 {
+            margin-top: 0.2rem;
+            color: #A9A9A9;
+        }
+
+        .code {
+            width: 15rem;
+            margin-top: 2rem;
+            justify-content: space-around;
+            display: flex;
+        }
+
+        .code input {
+            border: 1px solid #ccc;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+        }
+
+        #count {
+            width: 4rem;
+            height: 2rem;
+            text-align: center;
+            line-height: 2rem;
+            /*font-size: 1rem;*/
+            margin-top: 2.5rem;
+            background-color: #D3D3D3;
+            color: #A9A9A9;
+            border-radius: 0.5rem;
+        }
+
+        .login {
+            margin-top: 4rem;
+            background-image: linear-gradient(to right, #34ABFF, #007EFF);
+            width: 13rem;
+            height: 2.5rem;
+            border-radius: 2rem;
+            text-align: center;
+            line-height: 2.5rem;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="header">
+            <div onclick="back()"><img src="../image/back.png" alt="" style="width:12px;height:auto"></div>
+            <div class="help">帮助</div>
+        </div>
+        <div class="main">
+            <div class="text">
+                <h1>请输入验证码</h1>
+                <h3>验证码已发送至+86 <span id="phone">18258397345</span></h3>
+            </div>
+            <div class="code">
+                <input type="number" style="font-size: 1rem ; text-align:center ; color:#ccc" maxlength="1" class="num">
+                <input type="number" style="font-size: 1rem ; text-align:center ; color:#ccc" maxlength="1" class="num">
+                <input type="number" style="font-size: 1rem ; text-align:center ; color:#ccc" maxlength="1" class="num">
+                <input type="number" style="font-size: 1rem ; text-align:center ; color:#ccc" maxlength="1" class="num">
+            </div>
+            <div id="count">60</div>
+        </div>
+        <div class="login" onclick="register()">
+            注册
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    var moduleSMSSDK
+    var num = [];
+    var count = $api.byId('count');
+    var num = 60;
+    var phone
+    apiready = function() {
+        getHeight()
+        moduleSMSSDK = api.require('smssdk');
+        phone = api.pageParam.phone
+        $api.html($api.byId('phone'), phone);
+        count = num
+        settime(count)
+    }
+
+    function settime(val) {
+        if (val == 0) {
+            $api.css($api.byId('count'), 'font-size:0.6rem');
+            $api.html($api.byId('count'), "返回重新发送")
+            return false;
+        } else {
+            setTimeout(function() { //设置一个定时器，每秒刷新一次
+                // console.log(val)
+                val = val - 1
+                $api.html($api.byId('count'), val)
+                    // console.log(val)
+                settime(val)
+            }, 1000);
+        }
+    }
+
+    // function moveNext(object, index) {
+    //
+    //     if (object.value.length == 1) {
+    //        document.getELementsByTagName('input')
+    //     }
+    // }
+    function  register(){
+      api.openWin({
+          name: 'equipmentBinding',
+          url: './equipmentBinding.html',
+          pageParam: {
+              name: 'test'
+          }
+      });
+    }
+
+    // function register() {
+    //    console.log( typeof phone)
+    //     num = $api.domAll('.num')
+    //     var code = ''
+    //     for (const item of num) {
+    //         console.log(item.value)
+    //         code+= item.value
+    //     }
+    //     console.log(code)
+    //     var param = {
+    //         zone: '86',
+    //         phoneNumber:phone,
+    //         code:code
+    //     };
+    //     moduleSMSSDK.commitCode(param, function(ret, err) {
+    //         if (err !== null && err !== undefined && err !== '') {
+    //              alert('验证码错误！')
+    //             // 错误消息示例：{"msg":"Template not exist.","code":484}
+    //             // alert("Error:\n" + JSON.stringify(err));
+    //         } else {
+    //               setTimeout(function(){
+    //                 api.openWin({
+    //                     name: 'equipmentBinding',
+    //                     url: './equipmentBinding.html',
+    //                     pageParam: {
+    //                         name: 'test'
+    //                     }
+    //                 });
+    //               },1000)
+    //         }
+    //     });
+    // }
+</script>

@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        #container {
+            background-color: #DCDCDC;
+            display: flex;
+            flex-direction: column;
+            padding-top: 3rem;
+            align-items: center;
+        }
+
+        .sex {
+            display: flex;
+            margin-top: 1rem;
+        }
+
+        .sex img {
+            width: 6.2rem;
+            height: 2.5rem;
+        }
+
+        .userName,
+        .userPhone,
+        .password,
+        .VerificationCode {
+            margin-top: 0.8rem;
+            display: flex;
+            align-items: center;
+            padding-left: 1rem;
+            width: 13rem;
+            height: 2.5rem;
+            background-color: #FFFFFF;
+            border-radius: 2rem;
+        }
+
+        .input {
+            margin-left: 0.5rem;
+        }
+
+        .icon {
+            width: 1rem;
+            height: auto;
+        }
+
+        input::-ms-input-placeholder {
+            padding-left: 0.9rem;
+            opacity: 0.5
+        }
+
+        input::-webkit-input-placeholder {
+            padding-left: 0.9rem;
+            opacity: 0.5
+        }
+
+        .btn {
+            margin-right: 0.3rem;
+            font-size: 0.6rem;
+            background-image: linear-gradient(to right, #34ABFF, #007EFF);
+            width: 5rem;
+            height: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            line-height: 2rem;
+            color: white;
+        }
+
+        .login {
+            margin-top: 1rem;
+            background-image: linear-gradient(to right, #34ABFF, #007EFF);
+            width: 13rem;
+            height: 2.5rem;
+            border-radius: 2rem;
+            text-align: center;
+            line-height: 2.5rem;
+            color: white;
+        }
+        /*.bottom {
+            margin-top: 2rem;
+        }*/
+    </style>
+</head>
+<div id="container">
+    <div class="avatar">
+        <img src="../image/avatarMan.png" alt="" style="width:4rem;height:auto" id="man">
+    </div>
+    <div class="userInfo">
+        <div class="sex">
+            <img src="../image/manSmall.png" alt="" onclick="replaceMan()">
+            <img src="../image/womanSmall.png" alt="" onclick="replaceWoman()">
+        </div>
+        <div class="userName">
+            <div class="icon"><img src="../image/name.png" alt="">
+            </div>
+            <div class="input"><input type="text" id="userName" placeholder="真实姓名" style="font-size: 1rem"></div>
+        </div>
+        <div class="userPhone">
+            <div class="icon"><img src="../image/phone.png" alt=""></div>
+            <div class="input phone"><input type="tel" id="userPhone" placeholder="联系方式" style="font-size: 1rem" maxlength="11"></div>
+        </div>
+        <div class="password">
+            <div class="icon"><img src="../image/pwd.png" alt=""></div>
+            <div class="input phone"><input type="number" id="userPwd" placeholder="密码" style="font-size: 1rem"></div>
+        </div>
+        <!-- <div class="VerificationCode">
+            <input type="number" name="" value="" max="4" id="code">
+            <div class="btn" onclick="getVerificationCode()" id="verifCode">获取验证码</div>
+        </div> -->
+    </div>
+    <div class="login" onclick="register()">
+        注册
+    </div>
+</div>
+
+<body>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    var moduleSMSSDK
+    var count = 60
+    var mobile
+    var code
+    var verifCode
+    apiready = function() {
+        getHeight()
+        moduleSMSSDK = api.require('smssdk');
+    }
+
+    function replaceWoman() {
+        $api.attr($api.byId('man'), 'src', '../image/avatarWoman.png')
+    }
+
+    function replaceMan() {
+        $api.attr($api.byId('man'), 'src', '../image/avatarMan.png')
+    }
+
+    // function getVerificationCode() {
+    //      mobile = $api.byId('userPhone').value;
+    //      code = $api.byId('code').value;
+    //      verifCode = $api.byId('verifCode').value
+    //     if (mobile.length == 0) {
+    //         alert("请输入手机号");
+    //         return false;
+    //     } else if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(mobile))) {
+    //         alert("手机号码有误，请重填");
+    //         return false;
+    //     } else {
+    //         $api.html(verifCode, count);
+    //         $api.css(verifCode, 'background-color:#D3D3D3;color:#A9A9A9');
+    //         settime(count)
+    //         var param = {
+    //             zone: '86',
+    //             phoneNumber: phone.toString(),
+    //         };
+    //         moduleSMSSDK.getTextCode(param, function(ret, err) {
+    //
+    //             if (err !== null && err !== undefined && err !== '') {
+    //                 alert("Error:\n" + JSON.stringify(err));
+    //             } else {
+    //                 var param = {
+    //                     zone: '86',
+    //                     phoneNumber: mobile,
+    //                     code: code
+    //                 };
+    //                 moduleSMSSDK.commitCode(param, function(ret, err) {
+    //                     if (err !== null && err !== undefined && err !== '') {
+    //                         alert('验证码错误！')
+    //                             // 错误消息示例：{"msg":"Template not exist.","code":484}
+    //                             // alert("Error:\n" + JSON.stringify(err));
+    //                     } else {}
+    //                 });
+    //             }
+    //         });
+    //     }
+    // }
+    // function settime(val) {
+    //     if (val == 0) {
+    //         $api.css(verifCode, 'background-image: linear-gradient(to right, #34ABFF, #007EFF);color:white');
+    //         $api.html(verifCode, "获取验证码")
+    //         return false;
+    //     } else {
+    //         setTimeout(function() { //设置一个定时器，每秒刷新一次
+    //             // console.log(val)
+    //             val = val - 1
+    //             $api.html(verifCode, val)
+    //                 // console.log(val)
+    //             settime(val)
+    //         }, 1000);
+    //     }
+    // }
+    // function register() {
+    //     api.openWin({
+    //         name: 'equipmentBinding',
+    //         url: './equipmentBinding.html',
+    //         pageParam: {
+    //             name: 'test'
+    //         }
+    //     });
+    // }
+    function register() {
+        var userName = $api.byId('userName').value
+        var password = $api.byId('userPwd').value
+        var mobile = $api.byId('userPhone').value
+            // var code = $api.byId('code').value
+        if (userName.length == 0 || password.length == 0 || mobile.length == 0) {
+            alert("用户信息不能为空")
+        } else if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(mobile))) {
+            alert("手机号码有误，请重填");
+            return false;
+        } else {
+            var params = {
+                userName: mobile,
+                password: password,
+                mobile: mobile,
+                realName: userName
+            }
+            api.ajax({
+                    url: url+'/appUser/addUser.json',
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: {
+                        body: JSON.stringify(params)
+
+                    }
+                }, function(ret, err) {
+                    if (ret.errCode == "0") {
+                      console.log(JSON.stringify(ret.userId))
+                        alert("注册成功")
+                        $api.setStorage('userId',ret.userId)
+                        api.openWin({
+                            name: 'equipmentBinding',
+                            url: './equipmentBinding.html',
+                            pageParam: {
+                                name: 'test'
+                            }
+                        });
+                    }else{
+                      alert(ret.msg)
+                      // console.log(JSON.stringify(ret))
+                    }
+                })
+        }
+        $api.setStorage('userName', $api.byId('userName').value);
+        //密码
+        $api.setStorage('password', $api.byId('userPwd').value);
+        //手机号
+        $api.setStorage('mobile', $api.byId('userPhone').value);
+        $api.setStorage('avatar', $api.byId('man').src);
+
+    }
+</script>
+
+</html>

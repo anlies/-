@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style media="screen">
+        #container {
+            display: flex;
+            flex-direction: column;
+            background: url('../image/finish.png');
+            background-size: 100% 100%;
+        }
+
+        .header {
+            padding-left: 1rem;
+            padding-top: 2rem;
+        }
+
+        .main {
+            margin: 3rem auto;
+            text-align: center;
+            /*text-align: center;
+            margin-top:3rem;*/
+        }
+
+        .main h4 {
+            color: #696969;
+        }
+
+        input::-ms-input-placeholder {
+            text-align: center;
+            opacity: 0.5
+        }
+
+        input::-webkit-input-placeholder {
+            text-align: center;
+            opacity: 0.5
+        }
+
+        .bottom {
+            margin: 10rem auto;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 2.5rem;
+            background-image: radial-gradient(#696969, #000000);
+            text-align: center;
+            line-height: 4rem;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="header" onclick="back()"><img src="../image/back.png" alt="" style="width:12px;height:auto"></div>
+        <div class="main">
+            <h1>设置完成</h1>
+            <h4>警报服务已开启,设备正在守护您和您的家人</h4>
+        </div>
+        <div class="bottom" onclick="login()">登录</div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        getHeight()
+    }
+
+    function login() {
+        //设备唯一码
+        var mac = $api.getStorage('mac')
+            //用户id
+        var userId = $api.getStorage('userId')
+            // 车牌号
+        var car = $api.getStorage('carNumber')
+          console.log(car)
+
+            // 设备名
+        var deviceName = $api.getStorage('nickName')
+            //紧急联系人
+        var contact = $api.getStorage('mobile')
+            // if(!$api.getStorage('userId'))
+        if (!mac) {
+            alert("请绑定设备")
+        } else if (!car) {
+            alert("请输入车牌号")
+        } else if (!deviceName) {
+            alert("请输入昵称")
+        }
+        var params = {
+            mac:mac,
+            userId: userId,
+            car: car,
+            deviceName: deviceName,
+            contact: contact
+        }
+        api.ajax({
+            url:url+'/appDevice/addDevice.json',
+            method: 'post',
+            timeout: 30,
+            dataType: 'json',
+            returnAll: false,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: JSON.stringify(params)
+
+            }
+        }, function(ret, err) {
+          //  alert(ret)
+            if (ret.errCode == "0") {
+                alert("绑定成功")
+                api.openWin({
+                    name: 'login',
+                    url: './login.html',
+                    pageParam: {
+                        name: 'test'
+                    }
+                });
+            }else{
+              console.log(err)
+            //   alert("设备已重复绑定")
+            }
+        })
+    }
+    // function login() {
+    //   api.openWin({
+    //       name: 'login',
+    //       url: './login.html',
+    //       pageParam: {
+    //           name: 'test'
+    //       }
+    //   });
+    // }
+</script>

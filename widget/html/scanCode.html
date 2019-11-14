@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style media="screen">
+        #container {
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding-left:1rem;
+            padding-top:2rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /*#header {
+            padding-left: 2rem;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+        }*/
+
+        .bind {
+            padding-right: 2rem;
+            color: #A9A9A9;
+        }
+
+        .main {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .code {
+            margin: 2rem auto;
+            width: 10rem;
+            height: 10rem;
+        }
+
+        .text {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #1E90FF;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="header">
+            <div onclick="back()"><img src="../image/back.png" alt="" style="width:12px;height:auto"></div>
+            <div class="bind">手动绑定</div>
+        </div>
+        <div class="main">
+            <h1>扫描设备二维码</h1>
+            <div class="code" onclick="next()">
+                <img src="../image/code.png" alt="">
+            </div>
+        </div>
+        <div class="text">
+            <div onclick="openCode()">二维码在哪儿？</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    var FNScanner
+    apiready = function() {
+        getHeight()
+            //应用全局FNScanner模块
+        FNScanner = api.require('FNScanner');
+        // 监听应用回到前台
+        api.addEventListener({
+            name: 'resume'
+        }, function(ret, err) {
+            FNScanner.onResume();
+        });
+
+        // 监听应用回到后台
+        api.addEventListener({
+            name: 'pause'
+        }, function(ret, err) {
+            FNScanner.onPause();
+        });
+    }
+    function openCode() {
+        FNScanner.open({
+            autorotation: true
+        }, function(ret, err) {
+            if (ret) {
+                if (ret.eventType == 'success' && ret.content != '') {
+                    fnOpenCouple(ret.content)
+                }
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+    }
+    //打开最后扫码得出的数值
+    function fnOpenCouple(content) {
+        //可以发请求  成功后切换界面
+        // alert(content)
+        // console.warn(content);
+        $api.setStorage('mac', content);
+        alert("绑定成功")
+        api.openWin({
+            name: 'ready',
+            url: './ready.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+
+
+    function next() {
+      api.openWin({
+          name: 'ready',
+          url: './ready.html',
+          pageParam: {
+              name: 'test'
+          }
+      });
+
+    }
+    //
+    // var isSOff = true;
+    // // 打开闪光灯
+    // function fnOpenLamp() {
+    //     if (isSOff) {
+    //         FNScanner.switchLight({
+    //             status: 'on'
+    //         });
+    //         isSOff = false;
+    //     } else {
+    //         FNScanner.switchLight({
+    //             status: 'off'
+    //         });
+    //         isSOff = true;
+    //     }
+    // }
+</script>

@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style type="text/css">
+        #container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            height: 8rem;
+            background-image: linear-gradient(#33D6FF, #4889EB);
+            padding-top: 2.5rem;
+            padding-left: 1rem;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        .content {
+            width: 16rem;
+            height: 5rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #fff;
+            margin: 1rem auto;
+            border-radius: 1rem;
+        }
+        .number {
+            color: blue;
+            font-size: 1.5rem;
+        }
+        .add {
+            width: 13rem;
+            height: 2.5rem;
+            margin: 1rem auto;
+            background-color: #fff;
+            border-radius: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .aui-popup-content {
+            background-color: #ccc;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carInfo,.optime {
+            display: flex;
+            align-items: center;
+            margin: 0 auto;
+        }
+        .startTime,.endTime{
+          width:7.5rem;
+          height: 3rem;
+          border-radius: 0.5rem;
+          background-color: white;
+          color:#ccc;
+          margin: 0.5rem 0.5rem;
+          text-align: center
+        }
+        .contact{
+          text-align: center;
+          width: 12rem;
+          height: 4rem;
+          border-radius: 0.5rem;
+          background-color: white;
+          color:#ccc;
+          margin: 0.8rem auto;
+          padding-top:0.5rem;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="header">
+            <div class="title">
+                <h1 id="realName">Hi,Jack</h1>
+            </div>
+            <div class="time" style="font-size:1rem">
+                你好
+            </div>
+        </div>
+        <div class="content" aui-popup-for="bottom-left" onclick="detail()">
+            <div class="car">
+                <img src="../image/car.png" alt="" style="width:3.5rem;height:auto">
+            </div>
+                <div class="number" id="number">
+                    浙A0685G
+            </div>
+            <!-- <div class="electric">
+                <div class="battery">
+                    <div class="" style="font-size:0.7rem;line-height:0.7rem;">
+                        65%
+                    </div>
+                    <div class="" style="margin-left:0.3rem;">
+                        <img src="../image/battery.png" alt="" style="width:1.3rem;height:auto">
+                    </div>
+                </div>
+                <div class="set">
+                    <img src="../image/mark.png" alt="" style="width:1rem;height:auto;margin-left:1rem;">
+                </div>
+            </div> -->
+        </div>
+        <div class="add" onclick="addDevice()">
+            <img src="../image/add.png" alt="" style="width:1rem;height:auto">
+            <div class="text" style="margin-left:0.5rem;">
+                添加设备
+            </div>
+        </div>
+        <div class="aui-popup aui-popup-bottom-left" id="bottom-left">
+            <div class="aui-popup-arrow"></div>
+            <div class="aui-popup-content">
+                <div class="carInfo">
+                    <div style="width:3.5rem;height:auto">
+                        <img src="../image/car.png" alt="">
+                    </div>
+                    <div style="font-size:1rem;" id="mac">
+                        浙A0685G
+                    </div>
+                </div>
+                <div class="optime">
+                    <div class="startTime">
+                        <p>注册时间</p>
+                        <p id="startTime"></p>
+
+                    </div>
+                    <div class="endTime">
+                      <p>到期时间</p>
+                      <p id="endTime"></p>
+                    </div>
+                </div>
+                <div class="contact">
+                  <p>紧急联系人</p>
+                  <p id="contact"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-popup.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var popup = new auiPopup();
+        $api.html($api.byId('realName'), $api.getStorage('realName'));
+        var userId = Number($api.getStorage('userId'))
+
+        // console.log(typeof userId)
+        var params = {
+            userId: userId
+        }
+        api.ajax({
+            url: url +'/appDevice/getDeviceByUserId.json',
+            method: 'post',
+            timeout: 30,
+            dataType: 'json',
+            returnAll: false,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                body: {
+                    userId: userId
+                }
+            }
+        }, function(ret, err) {
+            console.log(JSON.stringify(ret.data[0]))
+            if (ret.errCode == "0") {
+                $api.html($api.byId('number'), ret.data[0].car);
+                $api.html($api.byId('mac'), ret.data[0].car);
+                $api.html($api.byId('startTime'), ret.data[0].createTime);
+                $api.html($api.byId('endTime'), ret.data[0].endTime);
+                $api.html($api.byId('contact'), ret.data[0].contact);
+                // $api.html($api.byId('limit'), ret.data[0].endTime);
+                $api.setStorage('deviceName', ret.data[0].deviceName);
+            } else {
+                console.log(JSON.stringify(ret))
+            }
+        })
+    }
+
+    function addDevice() {
+        api.openWin({
+            name: 'scanCode',
+            url: './scanCode.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+
+    function detail() {
+        popup.show($api.byId('bottom-left'))
+    }
+
+    function edit() {
+
+    }
+
+    function delect() {
+
+    }
+</script>
+
+</html>

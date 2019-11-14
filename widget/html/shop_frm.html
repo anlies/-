@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+
+    <style type="text/css">
+        #container {
+            height:100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="aui-content-padded">
+        <div id="container"></div>
+    </section>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    var map
+    var lon
+    var lat
+    apiready = function() {
+        map = api.require('bMap');
+        map.getLocationServices(function(ret, err) {
+            if (ret.enable) {
+                // alert(JSON.stringify(ret));
+                map.getLocation({
+                    accuracy: '100m',
+                    autoStop: true,
+                    filter: 1
+                }, function(ret, err) {
+                    if (ret.status) {
+                        // alert(JSON.stringify(ret));
+                        lon = ret.lon
+                        lat = ret.lat
+                        map.open({
+                            rect: {
+                                x: 0,
+                                y: 30,
+                                w: 'auto',
+                                h:'100%'
+                            },
+                            center: {
+                                lon: lon,
+                                lat: lat
+                            },
+                            zoomLevel: 18,
+                            showUserLocation: true,
+                            fixedOn: api.frameName,
+                            fixed: true
+                        }, function(ret) {
+                            if (ret.status) {
+                                // map.showUserLocation({
+                                //     isShow: true,
+                                //     trackingMode: 'none'
+                                // });
+                                // map.getNameFromCoords({
+                                //     lon: lon,
+                                //     lat: lat
+                                // }, function(ret, err) {
+                                //     if (ret.status) {
+                                //       map.showUserLocation({
+                                //           isShow: true,
+                                //           trackingMode: 'none'
+                                //       });
+                                //       $api.html($api.byId('location'),ret.address);
+                                //     }
+                                // });
+                            }
+                        });
+                    } else {
+                        alert(err.code);
+                    }
+                });
+            } else {
+                alert("未开启定位功能！");
+            }
+        });
+
+
+    }
+</script>

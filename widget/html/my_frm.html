@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style type="text/css">
+        #container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 10rem;
+            background-image: linear-gradient(#33D6FF, #4889EB);
+        }
+
+        .aui-content {
+            margin-top: 0.5rem;
+        }
+
+        .aui-list-item {
+            height: 3rem;
+            padding: 0.5rem 0.5rem;
+        }
+
+        .icon {
+            width: 1rem;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="" alt="" style="width:4rem;height:auto;" id="avatar">
+            <h2 style="color:#ffffff;margin-top:0.8rem;" id="carName">关谷神奇</h2>
+        </div>
+        <section class="aui-content">
+            <ul class="aui-list aui-list-in aui-margin-b-15">
+                <li class="aui-list-item">
+                    <div class="aui-list-item-label-icon">
+                        <div class="icon">
+                            <img src="../image/warn.png" alt="">
+                        </div>
+                        <!-- <i class="aui-iconfont aui-icon-location aui-text-info"></i> -->
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-title">警报日志</div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-label-icon">
+                        <div class="icon">
+                            <img src="../image/free.png" alt="">
+                        </div>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-title">续费管理</div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-label-icon">
+                        <div class="icon">
+                            <img src="../image/set.png" alt="">
+                        </div>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-title">通用设置</div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-label-icon">
+                        <div class="icon">
+                            <img src="../image/help.png" alt="">
+                        </div>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-title">帮助与反馈</div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-label-icon">
+                        <div class="icon">
+                            <img src="../image/private.png" alt="">
+                        </div>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-title">用户协议与隐私</div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </div>
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+
+<script type="text/javascript">
+  apiready = function(){
+     //  console.log($api.getStorage('avatar'));
+    //   console.log($api.getStorage('nickName'));
+    $api.attr($api.byId('avatar'),'src',$api.getStorage('avatar'));
+    $api.html($api.byId('carName'),$api.getStorage('deviceName'));
+    console.log($api.getStorage('deviceName'))
+  }
+    function closeWin() {
+        api.closeWin({});
+    }
+
+    function edit() {
+        api.openWin({
+            name: 'editInfo',
+            url: './editInfo.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+
+    }
+</script>
+
+</html>
